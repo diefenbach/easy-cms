@@ -1,0 +1,26 @@
+{% load static %}
+<div>
+    <img
+        class="img-fluid mt-2 {% if for_edit %}ec-edit-component{% else %}ec-component{% endif %}{% if object.css_class %} {{ object.css_class }}{% endif %}{% if active %} active{% endif %}"
+        {% if object.image_file %}
+            src="{{ object.image_file.url }}" 
+        {% else %}
+            src="{% static 'easy_cms/images/placeholder.png' %}"
+        {% endif %}         
+        {% if object.alt %}
+            alt="{{ object.alt }}"
+        {% endif %}
+        {% if object.image_title %}
+            title="{{ object.image_title }}" 
+        {% endif %}
+        
+        {% if for_edit %}
+            hx-trigger="click"
+            hx-get="{% url 'ec:edit-component' object.page.slug object.id %}"
+            hx-target="#content"
+            hx-select="#content"
+            hx-swap="outerHTML"
+            hx-push-url="true"             
+        {% endif %} />
+        <input type="hidden" name="component" value="{{ object.id }}" />
+</div>

@@ -1,0 +1,74 @@
+{% load static %}
+{% load nav %}
+
+<!doctype html>
+<html lang="en" class="h-100">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">        
+        <link rel="stylesheet" type="text/css" href="{% static 'easy_cms/bootstrap-icons/font/bootstrap-icons.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'easy_cms/bootstrap/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'easy_cms/easy_cms.css' %}">
+        <title>Easy CMS</title>
+    </head>
+    <body class="h-100">
+        <header class="bg-dark bg-gradient text-light fixed-top py-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="/">Easy CMS</a>
+                    </div>
+                    <div class="col-5 text-end user-select-none">
+                        {% if user.is_authenticated %}
+                            {% firstof user.get_short_name user.get_username %}
+                            · <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="{%  url 'admin:logout' %}">Logout</a>
+                            {% if user.is_superuser %}
+                                | <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'admin:index' %}">Admin</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        {% nav %}
+
+        <div class="messages container">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                            {% if 'safe' in message.tags %} {{ message|safe }} {% else %} {{ message }} {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <div class="content" id="content">
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+            
+            <div class="container-fluid">
+                {% block content_fluid %}{% endblock %}
+            </div>
+        </div>
+        {% block footer_wrapper %}
+            <footer class="footer bg-dark mt-auto fixed-bottom py-3">
+              <div class="container">
+                <span class="text-light">
+                    {% block footer %}{% endblock %}
+                </span>
+              </div>
+            </footer>
+        {% endblock %}
+
+        <script src="{% static 'easy_cms/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'easy_cms/htmx.min.js' %}"></script>
+        <script src="{% static 'easy_cms/hyperscript.min.js' %}"></script>
+    
+        {% block script %}{% endblock %}
+    </body>
+</html>

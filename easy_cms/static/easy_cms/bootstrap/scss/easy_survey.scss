@@ -1,0 +1,13 @@
+
+// Specifies the default spacer value to programmatically generate the spacer utilities.
+// Configuration
+
+$primary:       #264653;
+$success:       #2A9D8F;
+$info:          #E9C46A;
+$warning:       #F4A261;
+$danger:        #E76F51;
+
+$enable-rounded:    false;
+
+@import "./bootstrap";

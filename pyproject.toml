@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "django-easy-cms"
+version = "0.1.0"
+description = "A most simple CMS for Django and a showcase for HTMX."
+authors = ["Kai Diefenbach <kai.diefenbach@iqpp.de>"]
+readme = "README.rst"
+
+packages = [
+    { include = "easy_cms" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.7"
+django-polymorphic = "^3.1.0"
+django-crispy-forms = "^2.1"
+crispy-bootstrap5 = "^2023.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

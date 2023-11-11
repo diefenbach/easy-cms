@@ -1,0 +1,99 @@
+{% extends 'easy_cms/base.html' %}
+{% load crispy_forms_tags static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-2">
+            {% comment %} This is for resizing although it is position-fixed {% endcomment %}
+            <div id="ec-new-components-parent">
+                <div id="ec-new-components" class="position-fixed">
+                    <div class="ec-new-component border mb-1 text-bg-secondary">
+                        <input type="hidden" name="component" value="Title">
+                        Title
+                    </div>
+                    <div class="ec-new-component border mb-1 text-bg-secondary">
+                        <input type="hidden" name="component" value="Paragraph">
+                        Paragraph
+                    </div>
+                    <div class="ec-new-component border mb-1 text-bg-secondary">
+                        <input type="hidden" name="component" value="ParagraphTwoCols">
+                        Paragraph 2 Cols
+                    </div>
+                    <div class="ec-new-component border mb-1 text-bg-secondary">
+                        <input type="hidden" name="component" value="Image">
+                        Image
+                    </div>
+                </div>
+            </div>                                    
+        </div>        
+        {% comment %} <div class="col-2">
+            <form id="ec-components-form">
+                <div id="ec-components">
+                    {% csrf_token %}
+                    {% for component in page.components.all %}
+                        <div class="ec-component border mb-1 bg-light">
+                            <input type="hidden" name="component" value="{{ component.id }}" />
+                            {{ component.type }}
+                        </div>
+                    {% endfor %}
+                </div>            
+                    <button type="submit" class="btn btn-primary" name="save-page-structure" value="true"
+                        hx-post="{% url 'ec:edit' page.slug %}"
+                        hx-target="#content"
+                        hx-select="#content"
+                        hx-swap="outerHTML">
+                        Save
+                    </button>
+                    <button type="submit" class="btn btn-secondary" name="cancel-page-structure" value="true"
+                        hx-post="{% url 'ec:cancel-page-structure' page.slug component_id %}"
+                        hx-target="#content"
+                        hx-select="#content"
+                        hx-swap="outerHTML">
+                        Cancel
+                    </button>
+            </form>
+        </div> {% endcomment %}
+        <div class="col-7">
+            <form action="" id="ec-components-structure-form"
+                hx-trigger="dragend"
+                hx-post="{% url 'ec:save-components-structure' page.slug component_id %}"
+                hx-target="#content"
+                hx-select="#content"
+                hx-swap="outerHTML">
+                {{ rendered_page }}
+            </form>
+        </div> <!-- col-7 -->
+        <div class="col-3">
+            {% comment %} This is for resizing although it is position-fixed {% endcomment %}
+            <div id="ec-edit-form-parent">
+            {% if form %}
+                <form method="post" id="ec-edit-form" class="position-fixed">
+                    {% csrf_token %}
+                    {{ form|crispy }} 
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" 
+                        class="btn btn-danger"
+                        hx-delete="{% url 'ec:delete-component' page.slug component_id %}"
+                        hx-target="#content"
+                        hx-select="#content"
+                        hx-swap="outerHTML">
+                        Delete
+                    </button>
+                </form>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'easy_cms/Sortable.js' %}"></script>
+    <script src="{% static 'easy_cms/easy_cms_edit.js' %}"></script>
+
+    <script>
+        try {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        } catch {}
+    </script>
+{% endblock %}

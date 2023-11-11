@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-sm bg-light fixed-top">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% for menu_item in menu_items %}
+                    {% if menu_item.menu_items %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if menu_item.active %}active{% endif %}" href="#"
+                               role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                {{ menu_item.label }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for menu_item in menu_item.menu_items %}
+                                    <li><a class="dropdown-item {% if menu_item.active %}active{% endif %}"
+                                           href="{{ menu_item.url }}">{{ menu_item.label }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if menu_item.active %}active{% endif %}"
+                               {% if menu_item.target %}target="{{ menu_item.target }}"{% endif %}
+                               href="{{ menu_item.url }}">{{ menu_item.label }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% if display_edit %}
+                <a href="{% url 'ec:edit' page.slug %}" class="btn btn-primary me-1">Edit</a>            
+            {% endif %}
+            {% if display_view %}
+                <a href="{% url 'ec:page' page.slug %}" class="btn btn-primary me-1">View</a>
+            {% endif %}
+
+            <form class="d-flex" role="search">                
+                <input class="form-control me-1" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>                            
+        </div>
+    </div>
+</nav>
