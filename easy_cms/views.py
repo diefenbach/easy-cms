@@ -111,11 +111,18 @@ def save_components_structure(request, **kwargs):
 
 
 def delete_component(request, **kwargs):
-    component = get_object_or_404(Component, pk=kwargs.get("component_id"))
-    component.delete()
+    component_to_delete = get_object_or_404(Component, pk=kwargs.get("component_id"))
 
-    page = get_object_or_404(Page, slug=kwargs.get("slug"))
-    kwargs["component_id"] = page.components.first().id
+    all_page_components = component_to_delete.page.components.all()
+    idx = list(all_page_components).index(component_to_delete)
+    if idx > 0:
+        kwargs["component_id"] = all_page_components[idx - 1].id
+    elif len(all_page_components) > 1:
+        kwargs["component_id"] = all_page_components[idx + 1].id
+    else:
+        del kwargs["component_id"]
+
+    component_to_delete.delete()
 
     url = reverse("ec:edit-component", kwargs=kwargs)
     return render_cbv(EditView, request, "GET", url=url, kwargs=kwargs)

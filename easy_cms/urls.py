@@ -31,7 +31,7 @@ urlpatterns = [
         name="edit-component",
     ),
     path(
-        "<slug>/edit/<component_id>/save-components-structure",
+        "<slug>/save-components-structure",
         views.save_components_structure,
         name="save-components-structure",
     ),
