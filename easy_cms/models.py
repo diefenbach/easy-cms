@@ -40,7 +40,7 @@ class Component(PolymorphicModel):
     class Meta:
         ordering = ["order"]
 
-    def get_edit_form(self, exclude=None, data=None):
+    def get_edit_form(self, exclude=None, data=None, files=None):
         exclude = exclude or []
         if "order" in "exclude":
             exclude.remove("order")
@@ -50,7 +50,7 @@ class Component(PolymorphicModel):
                 model = self.__class__
                 exclude = ["order", "page"]
 
-        return ComponentForm(instance=self, data=data)
+        return ComponentForm(instance=self, data=data, files=files)
 
     def set_content(self, content):
         self.content = content

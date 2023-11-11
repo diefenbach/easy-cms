@@ -73,21 +73,12 @@ class EditView(TemplateView):
             return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
-        component_id = kwargs.get("component_id")
-        page_slug = kwargs.get("slug")
-        page = get_object_or_404(Page, slug=page_slug)
-
-        if self.request.POST.get("cancel-page-structure"):
-            context = self.get_context_data(**kwargs)
-            context["form"] = self.get_component_form(component_id)
-            return self.render_to_response(context)
-
-        elif 1:
-            component = Component.objects.get(pk=kwargs.get("component_id"))
-            form = component.get_edit_form(data=request.POST)
-            if form.is_valid():
-                form.save()
-            context = {"form": form, **self.get_context_data(**kwargs)}
+        breakpoint()
+        component = Component.objects.get(pk=kwargs.get("component_id"))
+        form = component.get_edit_form(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+        context = {"form": form, **self.get_context_data(**kwargs)}
 
         context = self.get_context_data(**kwargs)
         context["form"] = self.get_component_form(component.id)
