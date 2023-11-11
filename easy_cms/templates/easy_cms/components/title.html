@@ -1,13 +1,6 @@
 <{{ object.tag }}    
     class="{% if for_edit %}ec-edit-component{% else %}ec-component{% endif %}{% if object.css_class %} {{ object.css_class }}{% endif %}{% if active %} active{% endif %}"
-    {% if for_edit %}
-        hx-trigger="click"
-        hx-get="{% url 'ec:edit-component' object.page.slug object.id %}"
-        hx-target="#content"
-        hx-select="#content"
-        hx-swap="outerHTML"
-        hx-push-url="true"
-    {% endif %}>
+    {% include './hx.html' %}>
     {{ object.content|safe }}
     <input type="hidden" name="component" value="{{ object.id }}" />
 </{{ object.tag }}>

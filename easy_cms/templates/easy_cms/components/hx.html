@@ -1,0 +1,8 @@
+{% if for_edit %}
+    hx-trigger="click"
+    hx-get="{% url 'ec:edit-component' object.page.slug object.id %}"
+    hx-target="#content"
+    hx-select="#content"
+    hx-swap="outerHTML"
+    hx-push-url="true"
+{% endif %}
